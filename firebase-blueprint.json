@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "A user of the application.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user's unique ID from Firebase Auth." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user account was created." }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "symptomCheck": {
+      "title": "Symptom Check",
+      "description": "A record of a symptom check performed by a user.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The ID of the user who performed the check." },
+        "age": { "type": "number", "description": "The age of the user at the time of the check." },
+        "sex": { "type": "string", "enum": ["male", "female"], "description": "The sex of the user." },
+        "symptoms": { "type": "array", "items": { "type": "string" }, "description": "List of symptoms reported." },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the check was performed." },
+        "recommendations": { "type": "array", "items": { "type": "string" }, "description": "List of recommended medications." },
+        "advice": { "type": "array", "items": { "type": "string" }, "description": "List of lifestyle advice given." }
+      },
+      "required": ["userId", "age", "sex", "symptoms", "timestamp"]
+    },
+    "medication": {
+      "title": "Medication",
+      "description": "Information about an OTC medication.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the medication." },
+        "purpose": { "type": "string", "description": "What the medication is used for." },
+        "warnings": { "type": "array", "items": { "type": "string" }, "description": "Important warnings." },
+        "contraindications": { "type": "array", "items": { "type": "string" }, "description": "Conditions under which this medication should not be used." },
+        "symptomsTreated": { "type": "array", "items": { "type": "string" }, "description": "Symptoms this medication treats." },
+        "minAge": { "type": "number", "description": "Minimum age for this medication." }
+      },
+      "required": ["name", "purpose", "symptomsTreated"]
+    },
+    "lifestyleAdvice": {
+      "title": "Lifestyle Advice",
+      "description": "General advice for a specific symptom.",
+      "type": "object",
+      "properties": {
+        "symptom": { "type": "string", "description": "The symptom this advice is for." },
+        "advice": { "type": "string", "description": "The advice text." }
+      },
+      "required": ["symptom", "advice"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "user",
+      "description": "User profiles."
+    },
+    "symptomChecks/{checkId}": {
+      "schema": "symptomCheck",
+      "description": "History of symptom checks."
+    },
+    "medications/{medicationId}": {
+      "schema": "medication",
+      "description": "Database of OTC medications."
+    },
+    "lifestyleAdvice/{adviceId}": {
+      "schema": "lifestyleAdvice",
+      "description": "Database of lifestyle advice."
+    }
+  }
+}
